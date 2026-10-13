@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${nombreAplicacion} + ' · Por ubicación'">MeteoAPI · Por ubicación</title>
+    <link rel="stylesheet" th:href="@{/css/meteoapi.css}" href="/css/meteoapi.css">
+</head>
+<body>
+<header th:replace="~{fragmentos :: cabecera('ubicacion')}"></header>
+<main class="contenedor">
+    <div class="comienzo"><p class="ceja">ENCUENTRA UNA ESTACIÓN</p><h1>Buscar por ubicación</h1><p class="entradilla">Consulta la estación más cercana a unas coordenadas o a un punto kilométrico del catálogo.</p></div>
+    <p class="mensaje error" role="alert" th:if="${errorUbicacion}" th:text="${errorUbicacion}">Revisa la ubicación.</p>
+    <section class="rejilla dos">
+        <form class="panel formulario" th:action="@{/ubicacion}" action="/ubicacion" method="get"><h2>Coordenadas geográficas</h2><p class="suave">Latitud entre −90 y 90. Longitud entre −180 y 180.</p><div class="fila"><div class="campo"><label for="latitud">Latitud</label><input id="latitud" type="number" name="latitud" step="any" min="-90" max="90" required th:value="${latitud}" placeholder="40.42"></div><div class="campo"><label for="longitud">Longitud</label><input id="longitud" type="number" name="longitud" step="any" min="-180" max="180" required th:value="${longitud}" placeholder="-3.70"></div></div><button class="boton" type="submit">Buscar por coordenadas</button><a class="enlace" th:href="@{/ubicacion(latitud=40.42,longitud=-3.70)}">Usar ejemplo de Madrid →</a></form>
+        <form class="panel formulario" th:action="@{/ubicacion}" action="/ubicacion" method="get"><h2>Carretera y kilómetro</h2><p class="suave">Solo los puntos ficticios indicados en la tabla inferior.</p><div class="fila"><div class="campo"><label for="carretera">Carretera</label><input id="carretera" name="carretera" required maxlength="20" th:value="${carretera}" placeholder="A-6"></div><div class="campo"><label for="km">Punto kilométrico</label><input id="km" type="number" name="km" min="0" step="any" required th:value="${km}" placeholder="10.5"></div></div><button class="boton" type="submit">Buscar por carretera</button><a class="enlace" th:href="@{/ubicacion(carretera='A-6',km=10.5)}">Usar ejemplo de la A-6 →</a></form>
+    </section>
+    <section class="panel resultado-ubicacion" th:if="${resultado}">
+        <p class="ceja">ESTACIÓN MÁS CERCANA</p>
+        <div class="titulo-fila"><div><h2 th:text="${resultado.estacion.nombre}">Madrid Centro</h2><p class="suave" th:text="${resultado.estacion.municipio} + ', ' + ${resultado.estacion.provincia}">Madrid, Madrid</p></div><strong class="distancia" th:text="${#numbers.formatDecimal(resultado.distanciaKm,1,'POINT',2,'COMMA')} + ' km'">0,48 km</strong></div>
+        <p class="nota">Distancia geográfica aproximada. Las medidas corresponden a la estación encontrada.</p>
+        <div class="acciones">
+            <a class="boton" th:href="@{/estaciones/{id}(id=${resultado.estacion.id})}">Ver observación →</a>
+            <a class="boton secundario" th:if="${carretera == null}" th:href="@{/api/estaciones/cercana(latitud=${latitud},longitud=${longitud})}">Ver consulta en JSON ↗</a>
+            <a class="boton secundario" th:if="${carretera != null}" th:href="@{/api/estaciones/cercana(carretera=${carretera},km=${km})}">Ver consulta en JSON ↗</a>
+        </div>
+    </section>
+    <section class="panel tabla-panel"><h2>Puntos kilométricos de ejemplo</h2><p class="suave">Catálogo ficticio utilizado por el prototipo.</p><div class="tabla-scroll"><table><thead><tr><th>Carretera</th><th>Kilómetro</th><th>Coordenadas</th><th>Consulta</th></tr></thead><tbody><tr th:each="punto : ${puntosCarretera}"><td th:text="${punto.carretera}">A-6</td><td th:text="${punto.km}">10.5</td><td th:text="${punto.latitud} + ', ' + ${punto.longitud}">40.47, -3.783</td><td><a class="enlace" th:href="@{/ubicacion(carretera=${punto.carretera},km=${punto.km})}">Buscar →</a></td></tr></tbody></table></div></section>
+</main>
+<footer th:replace="~{fragmentos :: pie}"></footer>
+</body>
+</html>

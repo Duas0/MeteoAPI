@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MeteoAPI · La meteorología en tu mano</title>
+    <link rel="icon" href="/img/logo.png">
+    <link rel="stylesheet" href="/css/meteoapi.css">
+</head>
+<body>
+<header class="cabecera">
+    <a class="marca" href="/"><img src="/img/logo.png" alt="" width="42" height="42">MeteoAPI</a>
+    <nav aria-label="Navegación principal">
+        <a class="actual" href="/" aria-current="page">Inicio</a>
+        <a href="/estaciones">Estaciones</a>
+        <a href="/ubicacion">Por ubicación</a>
+        <a href="/estaciones/nueva">Añadir estación</a>
+    </nav>
+</header>
+<main class="contenedor">
+    <section class="hero">
+        <div>
+            <p class="ceja">OBSERVACIONES METEOROLÓGICAS</p>
+            <h1>La meteorología<br>en tu mano.</h1>
+            <p class="entradilla">Temperatura, humedad, viento y actividad eléctrica. Encuentra una estación y consulta su última observación en un solo lugar.</p>
+            <div class="acciones">
+                <a class="boton" href="/estaciones">Explorar estaciones <span aria-hidden="true">→</span></a>
+                <a class="boton secundario" href="/ubicacion">Buscar por ubicación</a>
+            </div>
+            <p class="nota">Prototipo con datos simulados · Sin registro</p>
+        </div>
+        <div class="vista-rapida" aria-label="Ejemplo de la estación Madrid Centro">
+            <div class="linea"><span class="etiqueta">Estación de ejemplo</span><span class="punto" aria-hidden="true"></span></div>
+            <img class="hero-logo" src="/img/logo.png" alt="Nube con un rayo en forma de flecha de descarga" width="180" height="180">
+            <div class="linea"><div><h2>Madrid Centro</h2><p class="suave">Madrid, España</p></div><strong class="temperatura-grande">21,5<span> °C</span></strong></div>
+            <div class="mini-medidas"><div><span>Humedad</span><strong>62 %</strong></div><div><span>Viento</span><strong>14,4 km/h</strong></div><div><span>Rayos / hora</span><strong>3</strong></div></div>
+            <a class="enlace" href="/estaciones/1">Ver observación completa →</a>
+        </div>
+    </section>
+    <section aria-labelledby="consultas-titulo">
+        <div class="titulo-fila"><h2 id="consultas-titulo">Una consulta para cada necesidad</h2><span class="suave">Web y JSON</span></div>
+        <div class="rejilla tres">
+            <a class="atajo" href="/estaciones"><span class="numero">01</span><h3>Por estación</h3><p>Busca por nombre, municipio o provincia y compara las últimas medidas.</p><span class="enlace">Abrir catálogo →</span></a>
+            <a class="atajo" href="/ubicacion"><span class="numero">02</span><h3>Por ubicación</h3><p>Introduce coordenadas o un punto kilométrico del catálogo de ejemplo.</p><span class="enlace">Encontrar una estación →</span></a>
+            <div class="atajo"><span class="numero">03</span><h3>Consultas meteorológicas</h3><p>Obtén las estaciones con rayos o con viento a partir de un mínimo.</p><div class="enlaces-inline"><a class="enlace" href="/api/estaciones/con-rayos">Rayos ↗</a><a class="enlace" href="/api/estaciones/viento">Viento ↗</a></div></div>
+        </div>
+    </section>
+    <section class="banda-api"><div><p class="ceja">PARA OTRAS APLICACIONES</p><h2>Los mismos datos, en JSON.</h2><p>Consulta el catálogo completo o una estación concreta desde la API.</p></div><div class="acciones"><a class="boton" href="/api/estaciones">Ver API ↗</a><a class="boton secundario" href="/api/estaciones/1">Estación de ejemplo</a></div></section>
+</main>
+<footer class="pie"><span>MeteoAPI · Isaac Moreno Duaso</span><span>Datos ficticios · Últimas observaciones de ejemplo</span></footer>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${nombreAplicacion} + ' · Añadir estación'">MeteoAPI · Añadir estación</title>
+    <link rel="stylesheet" th:href="@{/css/meteoapi.css}" href="/css/meteoapi.css">
+</head>
+<body>
+<header th:replace="~{fragmentos :: cabecera('nueva')}"></header>
+<main class="contenedor estrecho">
+    <div class="comienzo"><p class="ceja">AMPLÍA EL CATÁLOGO</p><h1>Añadir estación</h1><p class="entradilla">Registra una estación y su observación de ahora. El identificador y la fecha UTC se asignan al guardar.</p></div>
+    <form class="panel formulario" th:action="@{/estaciones/nueva}" action="/estaciones/nueva" th:object="${estacion}" method="post">
+        <!--/* La validación del servidor también protege los envíos sin navegador. */-->
+        <div class="mensaje error" role="alert" th:if="${#fields.hasErrors('*')}"><strong>Revisa los datos antes de guardar.</strong><ul><li th:each="error : ${#fields.errors('*')}" th:text="${error}">El campo no es válido.</li></ul></div>
+        <fieldset><legend>Información de la estación</legend><div class="campo"><label for="nombre">Nombre *</label><input type="text" th:field="*{nombre}" id="nombre" required maxlength="80" placeholder="Ej.: Cáceres Campus"></div><div class="fila"><div class="campo"><label for="municipio">Municipio *</label><input type="text" th:field="*{municipio}" id="municipio" required maxlength="80"></div><div class="campo"><label for="provincia">Provincia *</label><input type="text" th:field="*{provincia}" id="provincia" required maxlength="60"></div></div><div class="fila"><div class="campo"><label for="latitud">Latitud *</label><input type="number" th:field="*{latitud}" id="latitud" required step="any" min="-90" max="90" placeholder="39.47"></div><div class="campo"><label for="longitud">Longitud *</label><input type="number" th:field="*{longitud}" id="longitud" required step="any" min="-180" max="180" placeholder="-6.37"></div></div></fieldset>
+        <fieldset><legend>Última observación</legend><p class="suave">Las medidas son opcionales. Deja un campo vacío si no tienes ese dato; escribe 0 si la medida es cero.</p><div class="fila"><div class="campo"><label for="temperaturaC">Temperatura (°C)</label><input type="number" th:field="*{temperaturaC}" id="temperaturaC" step="any"></div><div class="campo"><label for="humedadPct">Humedad (%)</label><input type="number" th:field="*{humedadPct}" id="humedadPct" min="0" max="100"></div></div><div class="fila"><div class="campo"><label for="vientoKmh">Viento (km/h)</label><input type="number" th:field="*{vientoKmh}" id="vientoKmh" min="0" step="any"></div><div class="campo"><label for="direccionVientoGrados">Dirección del viento (°)</label><input type="number" th:field="*{direccionVientoGrados}" id="direccionVientoGrados" min="0" max="359"></div></div><div class="fila"><div class="campo"><label for="precipitacionUltimaHoraMm">Precipitación / hora (mm)</label><input type="number" th:field="*{precipitacionUltimaHoraMm}" id="precipitacionUltimaHoraMm" min="0" step="any"></div><div class="campo"><label for="rayosUltimaHora">Rayos / hora (radio 20 km)</label><input type="number" th:field="*{rayosUltimaHora}" id="rayosUltimaHora" min="0"></div></div></fieldset>
+        <p class="nota">Los campos con * son obligatorios. Los datos añadidos desaparecen al reiniciar el prototipo.</p>
+        <div class="acciones"><button class="boton" type="submit">Guardar estación</button><a class="boton secundario" th:href="@{/estaciones}" href="/estaciones">Cancelar</a></div>
+    </form>
+</main>
+<footer th:replace="~{fragmentos :: pie}"></footer>
+</body>
+</html>

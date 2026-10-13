@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${nombreAplicacion} + ' · Estaciones'">MeteoAPI · Estaciones</title>
+    <link rel="icon" th:href="@{/img/logo.png}" href="/img/logo.png">
+    <link rel="stylesheet" th:href="@{/css/meteoapi.css}" href="/css/meteoapi.css">
+</head>
+<body>
+<header th:replace="~{fragmentos :: cabecera('estaciones')}"></header>
+<main class="contenedor">
+    <div class="titulo-fila comienzo"><div><p class="ceja">CATÁLOGO METEOROLÓGICO</p><h1>Estaciones</h1><p class="suave" th:text="${descripcion}">La meteorología en tu mano.</p></div><a class="boton secundario" th:href="@{/api/estaciones(nombre=${nombre},provincia=${provincia},municipio=${municipio})}" href="/api/estaciones">Ver en JSON ↗</a></div>
+    <p class="mensaje exito" role="status" th:if="${mensaje}" th:text="${mensaje}">Estación añadida.</p>
+    <section class="panel filtros-panel" aria-label="Filtros de estaciones">
+        <form class="formulario-filtros" th:action="@{/estaciones}" action="/estaciones" method="get">
+            <div class="campo"><label for="nombre">Nombre de la estación</label><input id="nombre" name="nombre" th:value="${nombre}" placeholder="Ej.: Centro"></div>
+            <div class="campo"><label for="municipio">Municipio</label><input id="municipio" name="municipio" th:value="${municipio}" placeholder="Ej.: Madrid"></div>
+            <input type="hidden" name="provincia" th:if="${provincia != null}" th:value="${provincia}">
+            <button class="boton" type="submit">Buscar</button><a class="enlace" th:href="@{/estaciones}" href="/estaciones">Limpiar</a>
+        </form>
+        <nav class="filtros" aria-label="Filtrar por provincia">
+            <a th:href="@{/estaciones(nombre=${nombre},municipio=${municipio})}" href="/estaciones" th:classappend="${provincia == null} ? 'activo'">Todas</a>
+            <a th:each="p : ${provincias}" th:href="@{/estaciones(provincia=${p},nombre=${nombre},municipio=${municipio})}" th:classappend="${provincia != null and p.equalsIgnoreCase(provincia)} ? 'activo'" th:text="${p}">Madrid</a>
+        </nav>
+    </section>
+    <div class="titulo-fila resultados"><p><strong th:text="${#lists.size(estaciones)}">8</strong> estaciones encontradas</p><span class="leyenda" th:text="|Destacadas: ${minimoRayos} o más rayos / hora|">Destacadas: 1 o más rayos / hora</span></div>
+    <div class="vacio" th:if="${#lists.isEmpty(estaciones)}"><h2>No hay estaciones para estos filtros.</h2><p>Prueba con otro nombre, municipio o provincia.</p><a class="boton secundario" th:href="@{/estaciones}">Ver todas las estaciones</a></div>
+    <!--/* El servicio decide qué estaciones cumplen el umbral configurable. */-->
+    <section class="rejilla estaciones-rejilla">
+        <article class="tarjeta" th:each="estacion : ${estaciones}" th:classappend="${idsConRayos.contains(estacion.id)} ? 'con-rayos'">
+            <div class="linea"><span class="etiqueta" th:text="${estacion.provincia}">Madrid</span><span class="insignia-rayos" th:if="${idsConRayos.contains(estacion.id)}">Actividad eléctrica</span></div>
+            <h2><a th:href="@{/estaciones/{id}(id=${estacion.id})}" href="/estaciones/1" th:text="${estacion.nombre}">Madrid Centro</a></h2>
+            <p class="suave" th:text="${estacion.municipio}">Madrid</p>
+            <p class="temperatura" th:text="${estacion.temperaturaC == null ? 'Sin dato' : #numbers.formatDecimal(estacion.temperaturaC,1,'POINT',1,'COMMA') + ' °C'}">21,5 °C</p>
+            <div class="mini-medidas"><div><span>Humedad</span><strong th:text="${estacion.humedadPct == null ? '—' : estacion.humedadPct + ' %'}">62 %</strong></div><div><span>Viento</span><strong th:text="${estacion.vientoKmh == null ? '—' : #numbers.formatDecimal(estacion.vientoKmh,1,'POINT',1,'COMMA') + ' km/h'}">14,4 km/h</strong></div></div>
+            <a class="enlace" th:href="@{/estaciones/{id}(id=${estacion.id})}" href="/estaciones/1">Ver observación →</a>
+        </article>
+    </section>
+</main>
+<footer th:replace="~{fragmentos :: pie}"></footer>
+</body>
+</html>

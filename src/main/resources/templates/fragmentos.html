@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!--/* Los fragmentos mantienen la misma navegación en todas las vistas. */-->
+<header class="cabecera" th:fragment="cabecera(activo)">
+    <a class="marca" th:href="@{/}" href="/"><img th:src="@{/img/logo.png}" src="/img/logo.png" alt="" width="42" height="42"><span th:text="${nombreAplicacion}">MeteoAPI</span></a>
+    <nav aria-label="Navegación principal">
+        <a th:href="@{/}" href="/">Inicio</a>
+        <a th:href="@{/estaciones}" href="/estaciones" th:classappend="${activo == 'estaciones'} ? 'actual'">Estaciones</a>
+        <a th:href="@{/ubicacion}" href="/ubicacion" th:classappend="${activo == 'ubicacion'} ? 'actual'">Por ubicación</a>
+        <a th:href="@{/estaciones/nueva}" href="/estaciones/nueva" th:classappend="${activo == 'nueva'} ? 'actual'">Añadir estación</a>
+    </nav>
+</header>
+<footer class="pie" th:fragment="pie"><span><span th:text="${nombreAplicacion}">MeteoAPI</span> · Isaac Moreno Duaso</span><span>Datos ficticios · Medidas en UTC</span></footer>
+</body>
+</html>

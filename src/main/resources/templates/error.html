@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>MeteoAPI · Consulta no disponible</title><link rel="stylesheet" href="/css/meteoapi.css"></head>
+<body>
+<header class="cabecera"><a class="marca" href="/"><img src="/img/logo.png" alt="" width="42" height="42">MeteoAPI</a><nav aria-label="Navegación principal"><a href="/">Inicio</a><a href="/estaciones">Estaciones</a></nav></header>
+<main class="contenedor estrecho"><section class="panel pagina-error"><p class="ceja" th:text="|ERROR ${status}|">ERROR 404</p><h1 th:text="${status == 404 ? 'No encontramos lo que buscas.' : status == 400 ? 'Revisa los datos de la consulta.' : 'No se pudo completar la consulta.'}">No encontramos lo que buscas.</h1><p class="entradilla" th:if="${message != null}" th:text="${message}">La estación indicada no existe.</p><div class="acciones"><a class="boton" href="/estaciones">Ver estaciones</a><a class="boton secundario" href="/">Ir al inicio</a></div></section></main>
+</body>
+</html>

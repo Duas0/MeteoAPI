@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${estacion.nombre} + ' · ' + ${nombreAplicacion}">Madrid Centro · MeteoAPI</title>
+    <link rel="stylesheet" th:href="@{/css/meteoapi.css}" href="/css/meteoapi.css">
+</head>
+<body>
+<header th:replace="~{fragmentos :: cabecera('estaciones')}"></header>
+<main class="contenedor">
+    <a class="enlace volver" th:href="@{/estaciones}" href="/estaciones">← Volver al catálogo</a>
+    <div class="titulo-fila comienzo"><div><p class="ceja" th:text="|ESTACIÓN ${estacion.id} · ${estacion.provincia}|">ESTACIÓN 1 · MADRID</p><h1 th:text="${estacion.nombre}">Madrid Centro</h1><p class="suave" th:text="${estacion.municipio}">Madrid</p></div><a class="boton secundario" th:href="@{/api/estaciones/{id}(id=${estacion.id})}" href="/api/estaciones/1">Ver en JSON ↗</a></div>
+    <div class="observacion-cabecera"><span>Última observación</span><time th:datetime="${estacion.fechaObservacion}" th:text="${estacion.fechaObservacion}">2026-10-13T10:00:00Z</time><span class="etiqueta">UTC · Datos simulados</span></div>
+    <section class="rejilla medidas">
+        <article class="medida"><span>Temperatura</span><strong th:text="${estacion.temperaturaC == null ? '—' : #numbers.formatDecimal(estacion.temperaturaC,1,'POINT',1,'COMMA') + ' °C'}">21,5 °C</strong><p>Grados Celsius</p></article>
+        <article class="medida"><span>Humedad relativa</span><strong th:text="${estacion.humedadPct == null ? '—' : estacion.humedadPct + ' %'}">62 %</strong><p>Porcentaje de humedad</p></article>
+        <article class="medida"><span>Velocidad del viento</span><strong th:text="${estacion.vientoKmh == null ? '—' : #numbers.formatDecimal(estacion.vientoKmh,1,'POINT',1,'COMMA') + ' km/h'}">14,4 km/h</strong><p th:text="${estacion.vientoMs == null ? 'Sin dato de viento' : #numbers.formatDecimal(estacion.vientoMs,1,'POINT',2,'COMMA') + ' m/s · valor calculado'}">4,00 m/s · valor calculado</p></article>
+        <article class="medida"><span>Dirección del viento</span><strong th:text="${estacion.direccionVientoGrados == null ? '—' : estacion.direccionVientoGrados + '°'}">270°</strong><p>0° N · 90° E · 180° S · 270° O</p></article>
+        <article class="medida"><span>Precipitación</span><strong th:text="${estacion.precipitacionUltimaHoraMm == null ? '—' : #numbers.formatDecimal(estacion.precipitacionUltimaHoraMm,1,'POINT',1,'COMMA') + ' mm'}">0,4 mm</strong><p>Acumulada en la última hora</p></article>
+        <article class="medida" th:classappend="${idsConRayos.contains(estacion.id)} ? 'con-rayos'"><span>Rayos cercanos</span><strong th:text="${estacion.rayosUltimaHora == null ? '—' : estacion.rayosUltimaHora}">3</strong><p>Última hora · Radio de 20 km</p></article>
+    </section>
+    <section class="panel localizacion"><div><p class="ceja">LOCALIZACIÓN</p><h2 th:text="${estacion.municipio} + ', ' + ${estacion.provincia}">Madrid, Madrid</h2></div><dl><div><dt>Latitud</dt><dd th:text="${estacion.latitud}">40.4168</dd></div><div><dt>Longitud</dt><dd th:text="${estacion.longitud}">-3.7038</dd></div></dl><a class="enlace" th:href="@{/ubicacion(latitud=${estacion.latitud},longitud=${estacion.longitud})}">Buscar desde estas coordenadas →</a></section>
+</main>
+<footer th:replace="~{fragmentos :: pie}"></footer>
+</body>
+</html>
