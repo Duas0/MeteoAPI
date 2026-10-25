@@ -14,7 +14,7 @@ La entidad principal es `EstacionMeteorologica`: identificador, nombre, municipi
 
 ## Vídeo de presentación
 
-**Pendiente de grabar y añadir el enlace público.** El estudiante debe narrarlo con su propia voz y mostrar la versión etiquetada. [Guion de grabación](guion_video.md), con texto literal y acciones para cuatro minutos.
+**Enlace al vídeo: pendiente de añadir.**
 
 ## Cómo arrancar
 
@@ -71,42 +71,63 @@ Capturados el 25 de octubre de 2026 con JDK 21. Las fechas de error varían en c
 
 ```text
 $ curl.exe -s -i http://localhost:8080/api/estaciones/1
-HTTP/1.1 200 
-Content-Type: application/json;charset=UTF-8
-Content-Length: 302
-Date: Sun, 25 Oct 2026 22:26:34 GMT
-
+HTTP/1.1 200 
+
+Content-Type: application/json;charset=UTF-8
+
+Content-Length: 302
+
+Date: Sun, 25 Oct 2026 22:26:34 GMT
+
+
+
 {"id":1,"nombre":"Madrid Centro","municipio":"Madrid","provincia":"Madrid","latitud":40.4168,"longitud":-3.7038,"fechaObservacion":"2026-10-13T10:00:00Z","temperaturaC":21.5,"humedadPct":62,"vientoKmh":14.4,"direccionVientoGrados":270,"precipitacionUltimaHoraMm":0.4,"rayosUltimaHora":3,"vientoMs":4.0}
 ```
 
 ```text
 $ curl.exe -s -i http://localhost:8080/api/estaciones?provincia=Badajoz
-HTTP/1.1 200 
-Content-Type: application/json;charset=UTF-8
-Content-Length: 610
-Date: Sun, 25 Oct 2026 22:26:34 GMT
-
+HTTP/1.1 200 
+
+Content-Type: application/json;charset=UTF-8
+
+Content-Length: 610
+
+Date: Sun, 25 Oct 2026 22:26:34 GMT
+
+
+
 [{"id":3,"nombre":"Badajoz Ribera","municipio":"Badajoz","provincia":"Badajoz","latitud":38.8794,"longitud":-6.9707,"fechaObservacion":"2026-10-13T10:00:00Z","temperaturaC":25.2,"humedadPct":48,"vientoKmh":7.2,"direccionVientoGrados":180,"precipitacionUltimaHoraMm":0.0,"rayosUltimaHora":0,"vientoMs":2.0},{"id":4,"nombre":"Mérida Río","municipio":"Mérida","provincia":"Badajoz","latitud":38.9161,"longitud":-6.3437,"fechaObservacion":"2026-10-13T10:00:00Z","temperaturaC":24.0,"humedadPct":55,"vientoKmh":32.4,"direccionVientoGrados":225,"precipitacionUltimaHoraMm":1.8,"rayosUltimaHora":1,"vientoMs":9.0}]
 ```
 
 ```text
 $ curl.exe -s -i http://localhost:8080/api/estaciones/9999
-HTTP/1.1 404 
-Content-Type: application/json
-Transfer-Encoding: chunked
-Date: Sun, 25 Oct 2026 22:26:34 GMT
-
+HTTP/1.1 404 
+
+Content-Type: application/json
+
+Transfer-Encoding: chunked
+
+Date: Sun, 25 Oct 2026 22:26:34 GMT
+
+
+
 {"timestamp":"2026-10-25T22:26:34.879Z","status":404,"error":"Not Found","message":"No existe una estación con id 9999","path":"/api/estaciones/9999"}
 ```
 
 ```text
 $ curl.exe -s -i http://localhost:8080/api/estaciones/abc
-HTTP/1.1 400 
-Content-Type: application/json
-Transfer-Encoding: chunked
-Date: Sun, 25 Oct 2026 22:26:34 GMT
-Connection: close
-
+HTTP/1.1 400 
+
+Content-Type: application/json
+
+Transfer-Encoding: chunked
+
+Date: Sun, 25 Oct 2026 22:26:34 GMT
+
+Connection: close
+
+
+
 {"timestamp":"2026-10-25T22:26:34.927Z","status":400,"error":"Bad Request","message":"Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: \"abc\"","path":"/api/estaciones/abc"}
 ```
 
@@ -170,8 +191,6 @@ Con la configuración inicial aparecen cuatro estaciones en `/api/estaciones/con
 
 Las pruebas cubren filtros combinados, valor calculado, consultas de rayos y viento, configuración alternativa, errores HTTP, coordenadas inválidas, puntos de carretera, renderizado de vistas y el alta con validación y redirección.
 
-Verificación realizada el 25 de octubre de 2026 con **JDK 21**: `mvnw.cmd package` terminó con **BUILD SUCCESS**, nueve pruebas, cero fallos y cero errores. Se comprobó el arranque con el Wrapper, las vistas, respuestas HTTP reales 200/400/404 y el JAR con `--meteoapi.minimo-rayos=5` (dos estaciones en vez de cuatro). Se revisó visualmente la portada y el catálogo simplificados. Detalles y tareas finales en [COMPROBACION.md](COMPROBACION.md).
+Verificación realizada el 25 de octubre de 2026 con **JDK 21**: `mvnw.cmd package` terminó con **BUILD SUCCESS**, nueve pruebas, cero fallos y cero errores. Se comprobó el arranque con el Wrapper, las vistas, respuestas HTTP reales 200/400/404 y el JAR con `--meteoapi.minimo-rayos=5` (dos estaciones en vez de cuatro). Se revisó visualmente la portada y el catálogo simplificados.
 
 Para comprobarlo: `./mvnw package` (o `.\mvnw.cmd package` en Windows). La aplicación debe compilar para Java 21. El repositorio local incluye commits descriptivos y la etiqueta `entrega-1`; el ZIP de fuentes excluye `target/`, `.git/` y archivos del IDE.
-
-Antes de entregar al profesor falta completar el usuario Git, publicar el repositorio con acceso para `oscarmg@unex.es` y añadir el enlace del vídeo narrado. Después de completar esos datos, actualiza el commit y la etiqueta de entrega y genera un ZIP que coincida con esa versión.
