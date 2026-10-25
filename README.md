@@ -14,7 +14,7 @@ La entidad principal es `EstacionMeteorologica`: identificador, nombre, municipi
 
 ## Vídeo de presentación
 
-**Pendiente de grabar y añadir el enlace público.** El estudiante debe narrarlo con su propia voz y mostrar la versión etiquetada. [Guion de grabación](guion_video.md), de unos cinco minutos y medio.
+**Pendiente de grabar y añadir el enlace público.** El estudiante debe narrarlo con su propia voz y mostrar la versión etiquetada. [Guion de grabación](guion_video.md), con texto literal y acciones para cuatro minutos.
 
 ## Cómo arrancar
 
@@ -67,48 +67,59 @@ Fechas en UTC, temperatura en °C, humedad en %, viento en km/h y m/s, direcció
 
 ### Ejemplos (salidas reales)
 
+Capturados el 25 de octubre de 2026 con JDK 21. Las fechas de error varían en cada petición.
+
 ```text
-$ curl.exe -s http://localhost:8080/api/estaciones/1
+$ curl.exe -s -i http://localhost:8080/api/estaciones/1
+HTTP/1.1 200 
+Content-Type: application/json;charset=UTF-8
+Content-Length: 302
+Date: Sun, 25 Oct 2026 22:23:50 GMT
+
 {"id":1,"nombre":"Madrid Centro","municipio":"Madrid","provincia":"Madrid","latitud":40.4168,"longitud":-3.7038,"fechaObservacion":"2026-10-13T10:00:00Z","temperaturaC":21.5,"humedadPct":62,"vientoKmh":14.4,"direccionVientoGrados":270,"precipitacionUltimaHoraMm":0.4,"rayosUltimaHora":3,"vientoMs":4.0}
 ```
 
 ```text
-$ curl.exe -s "http://localhost:8080/api/estaciones?provincia=Badajoz"
+$ curl.exe -s -i http://localhost:8080/api/estaciones?provincia=Badajoz
+HTTP/1.1 200 
+Content-Type: application/json;charset=UTF-8
+Content-Length: 610
+Date: Sun, 25 Oct 2026 22:23:50 GMT
+
 [{"id":3,"nombre":"Badajoz Ribera","municipio":"Badajoz","provincia":"Badajoz","latitud":38.8794,"longitud":-6.9707,"fechaObservacion":"2026-10-13T10:00:00Z","temperaturaC":25.2,"humedadPct":48,"vientoKmh":7.2,"direccionVientoGrados":180,"precipitacionUltimaHoraMm":0.0,"rayosUltimaHora":0,"vientoMs":2.0},{"id":4,"nombre":"Mérida Río","municipio":"Mérida","provincia":"Badajoz","latitud":38.9161,"longitud":-6.3437,"fechaObservacion":"2026-10-13T10:00:00Z","temperaturaC":24.0,"humedadPct":55,"vientoKmh":32.4,"direccionVientoGrados":225,"precipitacionUltimaHoraMm":1.8,"rayosUltimaHora":1,"vientoMs":9.0}]
 ```
 
 ```text
-$ curl.exe -s "http://localhost:8080/api/estaciones/cercana?latitud=40.42&longitud=-3.70"
-{"estacion":{"id":1,"nombre":"Madrid Centro","municipio":"Madrid","provincia":"Madrid","latitud":40.4168,"longitud":-3.7038,"fechaObservacion":"2026-10-13T10:00:00Z","temperaturaC":21.5,"humedadPct":62,"vientoKmh":14.4,"direccionVientoGrados":270,"precipitacionUltimaHoraMm":0.4,"rayosUltimaHora":3,"vientoMs":4.0},"distanciaKm":0.48}
-```
-
-```text
 $ curl.exe -s -i http://localhost:8080/api/estaciones/9999
-HTTP/1.1 404 
-Content-Type: application/json
-Transfer-Encoding: chunked
-Date: Tue, 13 Oct 2026 18:09:42 GMT
-
-{"timestamp":"2026-10-13T18:09:42.505Z","status":404,"error":"Not Found","path":"/api/estaciones/9999"}
+HTTP/1.1 404 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Sun, 25 Oct 2026 22:23:50 GMT
+
+{"timestamp":"2026-10-25T22:23:50.743Z","status":404,"error":"Not Found","trace":"org.springframework.web.server.ResponseStatusException: 404 NOT_FOUND \"No existe una estación con id 9999\"\r\n\tat es.mdai.meteoapi.controller.EstacionRestController.lambda$obtener$0(EstacionRestController.java:35)\r\n\tat java.base/java.util.Optional.orElseThrow(Optional.java:403)\r\n\tat es.mdai.meteoapi.controller.EstacionRestController.obtener(EstacionRestController.java:34)\r\n\tat java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)\r\n\tat java.base/java.lang.reflect.Method.invoke(Method.java:580)\r\n\tat org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:252)\r\n\tat org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:184)\r\n\tat org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117)\r\n\tat org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:934)\r\n\tat org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:853)\r\n\tat org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86)\r\n\tat org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963)\r\n\tat org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:866)\r\n\tat org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1000)\r\n\tat org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:892)\r\n\tat jakarta.servlet.http.HttpServlet.service(HttpServlet.java:622)\r\n\tat org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:874)\r\n\tat jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710)\r\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:132)\r\n\tat org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:59)\r\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:111)\r\n\tat org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)\r\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\r\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:111)\r\n\tat org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)\r\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\r\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:111)\r\n\tat org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:199)\r\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\r\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:111)\r\n\tat org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165)\r\n\tat org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77)\r\n\tat org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:535)\r\n\tat org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)\r\n\tat org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:86)\r\n\tat org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:71)\r\n\tat org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:347)\r\n\tat org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:406)\r\n\tat org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:71)\r\n\tat org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:1307)\r\n\tat org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2036)\r\n\tat org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)\r\n\tat org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)\r\n\tat org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)\r\n\tat org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)\r\n\tat java.base/java.lang.Thread.run(Thread.java:1583)\r\n","message":"No existe una estación con id 9999","path":"/api/estaciones/9999"}
 ```
 
 ```text
 $ curl.exe -s -i http://localhost:8080/api/estaciones/abc
-HTTP/1.1 400 
-Content-Type: application/json
-Transfer-Encoding: chunked
-Date: Tue, 13 Oct 2026 18:09:42 GMT
-Connection: close
-
-{"timestamp":"2026-10-13T18:09:42.663Z","status":400,"error":"Bad Request","path":"/api/estaciones/abc"}
+HTTP/1.1 400 
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Sun, 25 Oct 2026 22:23:50 GMT
+Connection: close
+
+{"timestamp":"2026-10-25T22:23:50.800Z","status":400,"error":"Bad Request","trace":"org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: \"abc\"\r\n\tat org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.convertIfNecessary(AbstractNamedValueMethodArgumentResolver.java:295)\r\n\tat org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.resolveArgument(AbstractNamedValueMethodArgumentResolver.java:134)\r\n\tat org.springframework.web.method.support.HandlerMethodArgumentResolverComposite.resolveArgument(HandlerMethodArgumentResolverComposite.java:122)\r\n\tat org.springframework.web.method.support.InvocableHandlerMethod.getMethodArgumentValues(InvocableHandlerMethod.java:224)\r\n\tat org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:174)\r\n\tat org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117)\r\n\tat org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:934)\r\n\tat org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:853)\r\n\tat org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86)\r\n\tat org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963)\r\n\tat org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:866)\r\n\tat org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1000)\r\n\tat org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:892)\r\n\tat jakarta.servlet.http.HttpServlet.service(HttpServlet.java:622)\r\n\tat org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:874)\r\n\tat jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710)\r\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:132)\r\n\tat org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:59)\r\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:111)\r\n\tat org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)\r\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\r\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:111)\r\n\tat org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)\r\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\r\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:111)\r\n\tat org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:199)\r\n\tat org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)\r\n\tat org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:111)\r\n\tat org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165)\r\n\tat org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77)\r\n\tat org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:535)\r\n\tat org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)\r\n\tat org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:86)\r\n\tat org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:71)\r\n\tat org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:347)\r\n\tat org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:406)\r\n\tat org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:71)\r\n\tat org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:1307)\r\n\tat org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:2036)\r\n\tat org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:74)\r\n\tat org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:949)\r\n\tat org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:483)\r\n\tat org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:74)\r\n\tat java.base/java.lang.Thread.run(Thread.java:1583)\r\nCaused by: java.lang.NumberFormatException: For input string: \"abc\"\r\n\tat java.base/java.lang.NumberFormatException.forInputString(NumberFormatException.java:67)\r\n\tat java.base/java.lang.Long.parseLong(Long.java:708)\r\n\tat java.base/java.lang.Long.valueOf(Long.java:1156)\r\n\tat org.springframework.util.NumberUtils.parseNumber(NumberUtils.java:204)\r\n\tat org.springframework.beans.propertyeditors.CustomNumberEditor.setAsText(CustomNumberEditor.java:115)\r\n\tat org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:438)\r\n\tat org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:411)\r\n\tat org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:158)\r\n\tat org.springframework.beans.TypeConverterSupport.convertIfNecessary(TypeConverterSupport.java:75)\r\n\tat org.springframework.beans.TypeConverterSupport.convertIfNecessary(TypeConverterSupport.java:51)\r\n\tat org.springframework.validation.DataBinder.convertIfNecessary(DataBinder.java:846)\r\n\tat org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.convertIfNecessary(AbstractNamedValueMethodArgumentResolver.java:287)\r\n\t... 43 more\r\n","message":"Method parameter 'id': Failed to convert value of type 'java.lang.String' to required type 'java.lang.Long'; For input string: \"abc\"","path":"/api/estaciones/abc"}
 ```
 
-Alta opcional; se muestran las cabeceras de estado y redirección de la respuesta real:
+Alta opcional comprobada en una instancia temporal en el puerto 8081:
 
 ```text
-$ curl.exe -s -i -X POST http://localhost:8080/estaciones/nueva --data-urlencode "nombre=Estación documentada" --data-urlencode "municipio=Madrid" --data-urlencode "provincia=Madrid" --data-urlencode "latitud=40.4" --data-urlencode "longitud=-3.7" --data-urlencode "vientoKmh=18" | Select-String "^(HTTP/|Location:)"
-HTTP/1.1 302 
-Location: http://localhost:8080/estaciones
+$ curl.exe -s -i -X POST http://localhost:8081/estaciones/nueva --data "nombre=Estacion+documentada&municipio=Madrid&provincia=Madrid&latitud=40.4&longitud=-3.7&vientoKmh=18"
+HTTP/1.1 302 
+Set-Cookie: JSESSIONID=6DC6924940C80146E587666D6ECED17B; Path=/; HttpOnly
+Location: http://localhost:8081/estaciones
+Content-Language: es-ES
+Content-Length: 0
+Date: Sun, 25 Oct 2026 22:23:50 GMT
 ```
 
 ## Vistas
@@ -147,14 +158,14 @@ Con la configuración inicial aparecen cuatro estaciones en `/api/estaciones/con
 - `EstacionService` guarda ocho estaciones en `CopyOnWriteArrayList` y asigna ids con `AtomicLong`. Devuelve `Optional` al buscar por id, y listas obtenidas por filtros. Toda la validación, las reglas de rayos y viento y el cálculo de distancias están en el servicio; el getter del modelo convierte las unidades.
 - Los dos controladores tienen el mismo servicio, inyectado por constructor en un campo `final`. El REST devuelve objetos que Jackson serializa; el MVC aporta esos mismos datos a las plantillas. No hay inyección sobre atributos ni creación manual de servicios.
 - Las consultas propias son rayos y viento: permiten demostrar un umbral configurable y un `@RequestParam` con `defaultValue`. Las búsquedas geográficas amplían esas consultas con un catálogo de carretera pequeño y explícito, sin usar una API externa.
-- Las plantillas reutilizan cabecera y pie y usan `th:each`, `th:text`, `th:if`, `th:classappend`, `#numbers`, `#lists` y enlaces con parámetros. El CSS propio adapta las páginas a móvil.
+- La portada usa listas de enlaces y el CSS mantiene bordes discretos, tipografía estándar y una rejilla adaptable, sin librerías visuales. Las plantillas reutilizan cabecera y pie y usan `th:each`, `th:text`, `th:if`, `th:classappend`, `#numbers`, `#lists` y enlaces con parámetros. El CSS propio adapta las páginas a móvil.
 - En la entrega 2 se sustituirá la colección del servicio por persistencia con Spring Data JPA. En esta entrega no se usan JPA ni Lombok.
 
 ## Pruebas y entrega
 
 Las pruebas cubren filtros combinados, valor calculado, consultas de rayos y viento, configuración alternativa, errores HTTP, coordenadas inválidas, puntos de carretera, renderizado de vistas y el alta con validación y redirección.
 
-Verificación realizada el 13 de octubre de 2026: nueve pruebas, cero fallos, empaquetado correcto y comprobación del JAR mediante peticiones HTTP reales. Se utilizó JDK 22 con compilación `release 21`; no se ha ejecutado en un JDK 21 instalado en este equipo. Se comprobó también el inicio y el catálogo a una anchura de móvil de 375 px, sin desbordamiento horizontal.
+Verificación realizada el 25 de octubre de 2026 con **JDK 21**: `mvnw.cmd package` terminó con **BUILD SUCCESS**, nueve pruebas, cero fallos y cero errores. Se comprobó el arranque con el Wrapper, las vistas, respuestas HTTP reales 200/400/404 y el JAR con `--meteoapi.minimo-rayos=5` (dos estaciones en vez de cuatro). Se revisó visualmente la portada y el catálogo simplificados. Detalles y tareas finales en [COMPROBACION.md](COMPROBACION.md).
 
 Para comprobarlo: `./mvnw package` (o `.\mvnw.cmd package` en Windows). La aplicación debe compilar para Java 21. El repositorio local incluye commits descriptivos y la etiqueta `entrega-1`; el ZIP de fuentes excluye `target/`, `.git/` y archivos del IDE.
 
